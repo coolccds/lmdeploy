@@ -55,23 +55,6 @@ struct DecodingConfig<arch::Sm80, T, uint4_t, Qh_, HeadDim> {
     using Kernel = AttentionUniversal<arch::Sm80, Mainloop<Sm80_CpAsync<5>, Attention>, CacheIter, DecodingCtaMap>;
 };
 
-// --- BEGIN PATCH: sm75 HeadDim=256 fallback (reduce shared memory) ---
-
-template<class T, class Tkv, int Qh_>
-struct DecodingConfig<arch::Sm75, T, Tkv, Qh_, 256> {
-
-  // NOTE: Do NOT round Qh up to 8 here, to save shared memory.
-  static constexpr int Qh = Qh_;
-
-  // Reduce CTA_S from 64 -> 32 to fit into sm75 64KB opt-in shared memory limit.
-  using Attention = Impl<MMA_SIMT, T, Tkv, Qh, 1, 32, Qh, 1, 16, 256, 2>;
-
-  using CacheIter = GetBlockIterFactory<T, Tkv, 32, 256>;
-
-  using Kernel = AttentionUniversal<arch::Sm75, Mainloop<arch::Sm70, Attention>, CacheIter, DecodingCtaMap>;
-};
-
-// --- END PATCH ---
 //////////////////////////////////////////////////////////////
 
 template<class T, class Tkv, int Qh_, int HeadDim>
