@@ -1,3 +1,10 @@
+## 基于官方v0.12.1的代码，针对官方的PR:https://github.com/InternLM/lmdeploy/pull/4389
+## 经过修改，适配了适合2080Ti以及T10等sm75架构的代码。
+## 主机硬件霄龙7532,3卡T10，单卡16G显存,1卡2080Ti，22G显存。
+## 主机PVE8.4系统，虚拟机系统Ubuntu22.05，4显卡直通，并行运行。
+## conda环境下python3.10，已经编译可运行了。
+## 使用的模型是modelscope的QuantTrio/Qwen3.5-27B-AWQ模型
+## 模型运行在此框架下仅支持文本模式，不支持多模态。
 <div align="center">
   <img src="docs/en/_static/image/lmdeploy-logo.svg" width="450"/>
 
